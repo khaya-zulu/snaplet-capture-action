@@ -21,6 +21,16 @@ inputs:
     description: Skip the share step
     required: false
     type: boolean
+  source-database-url:
+    description: The connection string used to introspect and capture snapshots
+    required: true
+    type: string
+  access-token:
+    description: Access token to authentication as Snaplet Project (Cloud hosting)
+    required: false
+    type: string
+
+secrets:
 
 runs:
   using: composite
@@ -32,10 +42,10 @@ runs:
       shell: bash
       env:
         SNAPLET_CWD: ${{ inputs.cwd }}
-        SNAPLET_SOURCE_DATABASE_URL: ${{ secrets.SNAPLET_SOURCE_DATABASE_URL }}
-        SNAPLET_ACCESS_TOKEN: ${{ secrets.SNAPLET_ACCESS_TOKEN }}
+        SNAPLET_SOURCE_DATABASE_URL: ${{ inputs.source-database-url }}
+        SNAPLET_ACCESS_TOKEN: ${{ secrets.access-token }}
       run: snaplet snapshot capture ${{ inputs.destination-path }} --tags ${{ inputs.tags }}
     - name: Share snapshot
-      if: ${{ inputs.skip-share == 'false' }}
+      if: ${{ inputs.skip-share == false }}
       shell: bash
       run: snaplet snapshot share --latest
