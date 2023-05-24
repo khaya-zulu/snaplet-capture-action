@@ -13,22 +13,10 @@ inputs:
     description: Attach tags to the snapshot (seperate by comma)
     required: false
     type: string
-  cwd:
-    description: The current working directory
-    required: false
-    type: string
   skip-share:
     description: Skip the share step
     required: false
     type: boolean
-  source-database-url:
-    description: The connection string used to introspect and capture snapshots
-    required: true
-    type: string
-  access-token:
-    description: Access token to authentication as Snaplet Project (Cloud hosting)
-    required: false
-    type: string
 
 runs:
   using: composite
@@ -38,10 +26,6 @@ runs:
       run: curl -sS "https://app.snaplet.dev/get-cli/" | bash &> "/dev/null"
     - name: Capture a snapshot
       shell: bash
-      env:
-        SNAPLET_CWD: ${{ inputs.cwd }}
-        SNAPLET_SOURCE_DATABASE_URL: ${{ inputs.source-database-url }}
-        SNAPLET_ACCESS_TOKEN: ${{ inputs.access-token }}
       run: snaplet snapshot capture ${{ inputs.destination-path }} --tags ${{ inputs.tags }}
     - name: Share snapshot
       if: ${{ inputs.skip-share == false }}
