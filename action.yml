@@ -1,0 +1,41 @@
+name: Snaplet Capture
+
+author: Snaplet
+
+description: Use snaplet to capture a snapshot of your database
+
+inputs:
+  destination-path:
+    description: The path to where the snapshots are stored
+    required: false
+    type: string
+  tags:
+    description: Attach tags to the snapshot (seperate by comma)
+    required: false
+    type: string
+  cwd:
+    description: The current working directory
+    required: false
+    type: string
+  skip-share:
+    description: Skip the share step
+    required: false
+    type: boolean
+
+runs:
+  using: composite
+  steps:
+    - name: Install Snaplet CLI
+      shell: bash
+      run: curl -sS "https://app.snaplet.dev/get-cli/" | bash &> "/dev/null"
+    - name: Capture a snapshot
+      shell: bash
+      env:
+        SNAPLET_CWD: ${{ inputs.cwd }}
+        SNAPLET_SOURCE_DATABASE_URL: ${{ secrets.SNAPLET_SOURCE_DATABASE_URL }}
+        SNAPLET_ACCESS_TOKEN: ${{ secrets.SNAPLET_ACCESS_TOKEN }}
+      run: snaplet snapshot capture ${{ inputs.destination-path }} --tags ${{ inputs.tags }}
+    - name: Share snapshot
+      if: ${{ inputs.skip-share == 'false' }}
+      shell: bash
+      run: snaplet snapshot share --latest
