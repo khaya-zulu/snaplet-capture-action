@@ -30,8 +30,6 @@ inputs:
     required: false
     type: string
 
-secrets:
-
 runs:
   using: composite
   steps:
