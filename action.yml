@@ -43,7 +43,7 @@ runs:
       env:
         SNAPLET_CWD: ${{ inputs.cwd }}
         SNAPLET_SOURCE_DATABASE_URL: ${{ inputs.source-database-url }}
-        SNAPLET_ACCESS_TOKEN: ${{ secrets.access-token }}
+        SNAPLET_ACCESS_TOKEN: ${{ inputs.access-token }}
       run: snaplet snapshot capture ${{ inputs.destination-path }} --tags ${{ inputs.tags }}
     - name: Share snapshot
       if: ${{ inputs.skip-share == false }}
