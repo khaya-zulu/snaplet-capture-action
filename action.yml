@@ -24,6 +24,11 @@ runs:
     - name: Install Snaplet CLI
       shell: bash
       run: curl -sS "https://app.snaplet.dev/get-cli/" | bash &> "/dev/null"
+    - name: List pg dump version
+      shell: bash
+      run: |
+        psql --version
+        pg_dump --version
     - name: Capture a snapshot
       shell: bash
       run: snaplet snapshot capture ${{ inputs.destination-path }} --tags ${{ inputs.tags }}
