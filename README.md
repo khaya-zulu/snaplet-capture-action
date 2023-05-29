@@ -4,7 +4,8 @@
 
 Snaplet makes it easy and safe to create snapshots of your database. By providing a typescript configuration for transforming, reducing (subsetting) and excluding tables.
 
-This action allows you to run `snaplet capture` in your CI environment and optionally share those snapshots in Snaplet Cloud. Self-hosting allows you to run this operation within your own infrastracture without the need to share any of your credentials.
+This action allows you to run `snaplet capture` in your CI environment and optionally share those snapshots in Snaplet Cloud.
+Self-hosting gives you the flexibility to run snaplet commands on your own infrastracture without the need to share any of your credentials.
 
 ## Usage
 
@@ -15,7 +16,7 @@ Create a GitHub Action Workflow file in your repository following one of these e
 ```yaml
 # .github/workflows/preview.yml
 
-name: Preview Environment
+name: Snaplet Capture
 
 env:
   SNAPLET_TARGET_DATABASE_URL: ${{ secrets.SNAPLET_TARGET_DATABASE_URL }}
@@ -29,6 +30,8 @@ jobs:
   capture:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out
+        uses: actions/checkout@v3
       - uses: snaplet/capture-action@v3
         with: |
           destination-path: /tmp/my-snapshot
