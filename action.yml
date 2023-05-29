@@ -36,7 +36,8 @@ runs:
     - name: Capture a snapshot
       shell: bash
       run: |
-        if [[ -n "${inputs.tags}"]] then
+        if [[ -n "${inputs.tags}"]] 
+        then
           snaplet snapshot capture ${{ inputs.destination-path }} --tags ${{ inputs.tags }}
         else
           snaplet snapshot capture ${{ inputs.destination-path }}
