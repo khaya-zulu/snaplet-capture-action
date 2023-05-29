@@ -35,7 +35,7 @@ jobs:
       - uses: snaplet/capture-action@v3
         with: |
           destination-path: /tmp/my-snapshot
-          skip-share: false
+          skip-share: true # opt out of sharing snapshot.
 ```
 
 ## Documentation
